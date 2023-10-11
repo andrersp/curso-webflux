@@ -1,6 +1,8 @@
 package com.example.webflux.controller.impl;
 
 import com.example.webflux.controller.UserController;
+import com.example.webflux.entity.User;
+import com.example.webflux.mapper.UserMapper;
 import com.example.webflux.model.request.UserRequest;
 import com.example.webflux.model.response.UserResponse;
 import com.example.webflux.service.UserService;
@@ -18,14 +20,15 @@ import reactor.core.publisher.Mono;
 public class UserControllerImpl  implements UserController {
 
     private final UserService userService;
+    private final UserMapper userMapper;
     @Override
     public ResponseEntity<Mono<Void>> save(UserRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED).body(userService.save(request).then());
     }
 
     @Override
-    public ResponseEntity<Mono<UserResponse>> find(String id) {
-        return null;
+    public ResponseEntity<Mono<UserResponse>> findById(String id) {
+        return ResponseEntity.ok().body(userService.findById(id).map(userMapper::toDTO));
     }
 
     @Override
