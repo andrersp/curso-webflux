@@ -11,3 +11,4 @@ spring:
       username: root
       password: rootpassword
       auto-index-creation: true
+      authentication-database: admin
