@@ -30,8 +30,6 @@ public class ControllerExceptionHandler {
                 verifyDupKey(exc.getMessage()),
                 fieldErrors
         );
-        System.out.println(err.toString());
-        System.out.println("Andre");
 
         return ResponseEntity.badRequest().body(
                 Mono.just(err)
