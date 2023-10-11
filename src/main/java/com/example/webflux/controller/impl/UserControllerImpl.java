@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/users")
@@ -33,7 +35,12 @@ public class UserControllerImpl  implements UserController {
 
     @Override
     public ResponseEntity<Flux<UserResponse>> findAll() {
-        return null;
+        Flux<UserResponse> users = userService.findAll().map(userMapper::toDTO);
+
+        return ResponseEntity.ok().body(
+                users
+        );
+
     }
 
     @Override

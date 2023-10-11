@@ -7,6 +7,7 @@ import com.example.webflux.model.request.UserRequest;
 import com.example.webflux.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Service
@@ -20,16 +21,17 @@ public class UserService {
         return userRepository.save(userMapper.toEntity(request));
     }
 
-    public Mono<User> findById(final String id){
+    public Mono<User> findById(final String id) {
 
-        return userRepository.findById(id).switchIfEmpty(
-                Mono.error(
-                        new ObjectNotFoundException(
-                                String.format("Object not found. id: %s, type: %s", id, "user")
-                        )
-                )
-        );
+        return userRepository.findById(id)
+                .switchIfEmpty(
+                        Mono.error(new ObjectNotFoundException(String.format("Object not found. id: %s, type: %s", id, "user")))
+                );
 
+    }
+
+    public Flux<User> findAll(){
+        return userRepository.findAll();
     }
 
 }
