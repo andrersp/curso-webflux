@@ -58,6 +58,21 @@ public class ControllerExceptionHandler {
         return ResponseEntity.badRequest().body(Mono.just(err));
     }
 
+    @ExceptionHandler(ObjectNotFoundException.class)
+    ResponseEntity<Mono<StandardError>> objectNotFoundException(ObjectNotFoundException exc){
+        List<FieldErrors> errors = new ArrayList<>();
+        StandardError err = new StandardError(
+                LocalDateTime.now(),
+                "",
+                HttpStatus.NOT_FOUND.value(),
+                HttpStatus.NOT_FOUND.getReasonPhrase(),
+                exc.getMessage(),
+                errors
+        );
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Mono.just(err));
+    }
+
     private String verifyDupKey(String message) {
         if (message.contains("email dup key")) {
             return "email duplicado";
